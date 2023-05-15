@@ -1,0 +1,32 @@
+/* 공통 */
+img{
+    width: 100%;
+    height: 100%;
+}
+
+/* layout */
+aside{
+    height: 100vh;
+    background: white;
+}
+#wrap{
+    background: whitesmoke;
+}
+#top{
+    width: 100%;
+    height: 60px;
+    background-color: white;
+}
+
+
+/* search box */
+.searchBox{
+    float: right;
+    width: 300px;
+    margin: 10px;
+}
+.searchBox::after{
+    display: block;
+    clear: both;
+}
+

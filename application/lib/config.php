@@ -10,13 +10,15 @@ define("_DB_NAME","minitwo");
 define("_DB_CHARSET","utf8mb4");
 
 
-// 기타
+// EXTENSTION : 확장자
 define("_EXTENSTION_PHP", ".php");
+
+// PATH : 경로
 define("_PATH_CONTROLLER", "application/controller/");
 define("_PATH_MODEL", "application/model/");
 define("_PATH_VIEW", "application/view/");
 
-
+// BASE : 기본(부모) 파일
 define("_BASE_FILENAME_CONTROLLER","Controller");
 define("_BASE_FILENAME_MODEL","Model");
 
