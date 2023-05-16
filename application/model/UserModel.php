@@ -2,7 +2,7 @@
 namespace application\model;
 
 class UserModel extends Model{
-    public function getUser($arrUserInfo){
+    public function getUser($arrUserInfo, $pwFlg = true ){
         $sql = 
             " SELECT "
             ." * "
@@ -10,14 +10,23 @@ class UserModel extends Model{
             ." user_info "
             ." WHERE "
             ." u_id = :id "
-            ." AND "
-            ." u_pw = :pw "
             ;
+        
+        if($pwFlg){
+            $sql .=             
+                " AND "
+                ." u_pw = :pw "
+                ;
+        }
 
         $prepare = [
             ":id" => $arrUserInfo["id"]
-            ,":pw" => $arrUserInfo["pw"]
         ];
+
+        if($pwFlg){
+            $prepare[":pw"] = $arrUserInfo["pw"];
+        }
+
         try {
             $stmt = $this->conn->prepare($sql);
             $stmt->execute($prepare);
@@ -26,12 +35,14 @@ class UserModel extends Model{
             echo "UserModel->getUser Error : ".$e->getMessage();
             exit();
         }
+        // 0516 Del
         // finally {
         //     $this->closeConn();
         // }
         return $result;
     }
 
+    // 회원가입 - Insert
     public function joinUser($arrUserInfo){
         $sql =
         " INSERT INTO "
@@ -65,44 +76,18 @@ class UserModel extends Model{
         ];
         try
         {
-            $this->conn->beginTransaction();
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute($prepare);
-            $result_cnt = $stmt->rowCount();
-            $this->conn->commit();
+            $result = $stmt->execute($prepare);
+            return $result; // true 또는 false로 반환
         }
         catch( Exception $e )
         {
-            echo "UserModel->getUser Error : ".$e->getMessage();
-            exit();
+            // 0516 update
+            // echo "UserModel->getUser Error : ".$e->getMessage();
+            // exit();
+            return false;
         }
     }
 
-    public function getTest($arrUserInfo){
-        $sql = 
-            " SELECT "
-            ." * "
-            ." FROM "
-            ." user_info "
-            ." WHERE "
-            ." u_id = :id "
-            ;
-
-        $prepare = [
-            ":id" => $arrUserInfo["id"]
-        ];
-        try {
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute($prepare);
-            $result = $stmt->fetchAll();
-        } catch ( Exception $e ){
-            echo "UserModel->getUser Error : ".$e->getMessage();
-            exit();
-        }
-        // finally {
-        //     $this->closeConn();
-        // }
-        return $result;
-    }
 }
 ?>

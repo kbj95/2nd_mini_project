@@ -34,8 +34,23 @@ class Model {
     }
 
     // DB Connect 파기
-    protected function closeConn(){
+    public function close(){
         $this->conn = null;
+    }
+
+    // Transaction Start
+    public function beginTransaction(){
+        $this->conn->beginTransaction();
+    }
+
+    // commit
+    public function commit(){
+        $this->conn->commit();
+    }
+
+    // rollback
+    public function rollBack(){
+        $this->conn->rollBack();
     }
 }
 ?>

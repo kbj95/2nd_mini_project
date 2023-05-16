@@ -1,0 +1,53 @@
+h1{
+    text-align: center;
+}
+h1 > a{
+    text-decoration: none;
+    color: #308752;
+}
+h1 > a:hover{
+    color: #308752;
+}
+ul,li{
+    list-style: none;
+}
+
+/* login form */
+form{
+    width: 450px;
+    height: 650px;
+    margin: 0 auto;
+    padding-top: 30px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+}
+li{
+    margin-top: 10px;
+}
+label{
+    width: 100px;
+    height: 29px;
+    line-height: 29px;
+    font-size: 15px;
+    color: #333333;
+    font-weight: 600;
+    vertical-align: top;
+    text-align: center;
+    margin-top: 1px;
+}
+input:focus{
+    outline: 1px solid #308752;
+}
+
+div#idPop{
+    width: 450px;
+    height: 100px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 100px;
+    background-color: #ccc;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%,-20%);
+}
