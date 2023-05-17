@@ -10,6 +10,8 @@ class UserModel extends Model{
             ." user_info "
             ." WHERE "
             ." u_id = :id "
+            ." AND "
+            ." u_del_flg = 0 "
             ;
         
         if($pwFlg){
@@ -50,18 +52,14 @@ class UserModel extends Model{
         ." u_id "
         ." ,u_pw "
         ." ,u_name "
-        ." ,u_adress "
         ." ,u_phone_num "
-        ." ,u_email "
         ." ,u_from_date "
         ." ) "
         ." VALUES( "
         ." :id "
         ." ,:pw "
         ." ,:name "
-        ." ,:adress "
         ." ,:phoneNum "
-        ." ,:email "
         ." ,NOW() "
         ." ) "
         ;
@@ -70,9 +68,7 @@ class UserModel extends Model{
             ":id" => $arrUserInfo["id"]
             ,":pw" => $arrUserInfo["pw"]
             ,":name" => $arrUserInfo["name"]
-            ,":adress" => $arrUserInfo["adress"]
             ,":phoneNum" => $arrUserInfo["phoneNum"]
-            ,":email" => $arrUserInfo["email"]
         ];
         try
         {

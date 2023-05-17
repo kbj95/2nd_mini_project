@@ -4,11 +4,11 @@ h1{
     padding: 20px;
 }
 h1 > a{
-    color: #308752;
+    color: #333333;
     text-decoration: none;
 }
 h1 > a:hover{
-    color: #308752;
+    color: #333333;
 }
 
 /* login form */

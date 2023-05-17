@@ -43,48 +43,93 @@ class UserController extends Controller{
     public function joinPost(){
         $arrPost = $_POST;
         $arrChkErr = [];
+        $arrInput = [];
         // 유효성체크
         // ID 글자수 체크
         if(mb_strlen($arrPost["id"]) < 3 || mb_strlen($arrPost["id"]) > 12 ){
-            $arrChkErr["id"] = "ID는 12글자 이하로 입력해 주세요.";
+            $arrChkErr["id"] = "ID는 영문글자로 입력해주세요.";
+        }
+        // 유효성검사를 통과하면 값 출력 유지
+        else{
+            $arrInput["idInput"] = $arrPost["id"];
         }
         // ID 영문숫자 체크
+        if(preg_match("/[^a-z0-9]/i", $arrPost["id"])){
+            $arrChkErr["id"] = "ID는 영문, 숫자만 사용할 수 있습니다.";
+        }
+        else{
+            $arrInput["idInput"] = $arrPost["id"];
+        }
+        // ID 첫글자 영어
+        if(!preg_match("/^[a-z]/i", $arrPost["id"])) {
+			$arrChkErr["id"] = "아이디의 첫글자는 영문이어야 합니다.";
+		}
+        else{
+            $arrInput["idInput"] = $arrPost["id"];
+        }
 
         // PW 글자수 체크
         if(mb_strlen($arrPost["pw"]) < 8 || mb_strlen($arrPost["pw"]) > 20){
             $arrChkErr["pw"] = "PW는 8~20글자로 입력해 주세요.";
         }
         // PW 영문숫자특수문자 체크
+        if(preg_match("/\s/u", $arrPost["pw"]) == true){
+            $arrChkErr["pw"] = "비밀번호는 공백없이 입력해주세요.";
+        }
+        if((preg_match("/[0-9]/u", $arrPost["pw"]) === 0 ) || (preg_match("/[^a-z]/u", $arrPost["pw"]) === 0 ) || (preg_match("/[\!\@\*]/u", $arrPost["pw"]) === 0 )){
+            $arrChkErr["pw"] = "특수문자(!/*/@) 영문, 숫자를 혼합하여 입력해주세요.";
+        }
 
         // 비밀번호와 비밀번호체크 확인
         if($arrPost["pw"] !== $arrPost["pwChk"]){
             $arrChkErr["pwChk"] = "비밀번호와 비밀번호확인이 일치하지 않습니다.";
         }
 
-        //NAME 글자수 체크
-        if(mb_strlen($arrPost["name"]) === 0 || mb_strlen($arrPost["name"]) > 30){
-            $arrChkErr["name"] = "이름을 다시 입력해 주세요.";
+        // NAME 글자수 체크
+        if(mb_strlen($arrPost["name"]) === 0 || mb_strlen($arrPost["name"]) > 30 ){
+            $arrChkErr["name"] = "이름을 1~30글자로 입력해주세요.";
         }
+        // 유효성검사를 통과하면 값 출력 유지
+        else{
+            $arrInput["nameInput"] = $arrPost["name"];
+        }
+        if(preg_match("/[^a-z가-힣ㄱ-ㅎㅏ-ㅣ]/u", $arrPost["name"])){
+            $arrChkErr["name"] = "이름을 다시 입력해주세요.";
+        }
+        else{
+            $arrInput["nameInput"] = $arrPost["name"];
+        }
+
+        // 전화번호 유효성 검사
+        if(preg_match("/^\d{3}-\d{3,4}-\d{4}$/", $arrPost["phoneNum"])){
+            $arrChkErr["name"] = "전화번호를 다시 입력해주세요.";
+        }
+        else{
+            $arrInput["phoneInput"] = $arrPost["phoneNum"];
+        }
+        $result = $this->model->getUser($arrPost, false);
+        
+        // 중복확인 체크 + 아이디 유효성검사까지 되도록 
+        // if(count($result) !== 0){
+            //     $errMsg = "입력하신 ID가 사용중입니다.";
+            //     $this->addDynamicProperty("errMsg",$errMsg);
+            //     // 회원가입페이지
+            //     // return "join"._EXTENSTION_PHP;
+            // }
+            if(count($result) !== 0){
+                $arrChkErr["id"] ="입력하신 ID가 사용중입니다.";
+            }
+            
+            // Transaction start
+            $this->model->beginTransaction();
 
         // 유효성체크 에러일 경우
         if(!empty($arrChkErr)){
             // 에러메세지 셋팅
             $this->addDynamicProperty("arrError",$arrChkErr);
+            $this->addDynamicProperty("arrInput",$arrInput);
             return "join"._EXTENSTION_PHP;
         }
-
-        $result = $this->model->getUser($arrPost, false);
-
-        // 유저 유무 체크
-        if(count($result) !== 0){
-            $errMsg = "입력하신 ID가 사용중입니다.";
-            $this->addDynamicProperty("errMsg",$errMsg);
-            // 회원가입페이지
-            return "join"._EXTENSTION_PHP;
-        }
-
-        // Transaction start
-        $this->model->beginTransaction();
 
         // 회원가입
         if(!$this->model->joinUser($arrPost)){
@@ -113,5 +158,15 @@ class UserController extends Controller{
     //     return _BASE_REDIRECT."/Shop/main";
     // } ---------------------------------------------------------
     
+    // 마이페이지
+    public function mypageGet(){
+        return "mypage"._EXTENSTION_PHP;
+    }
+    public function myIdSelect(){
+        $arrUserInfo["id"] = $_SESSION[_STR_LOGIN_ID];
+        $arrMyinfo = $this->model->getUser($arrUserInfo, false);
+        $this->model->close();
+        return $arrMyinfo[0];
+    }
 }
 ?>

@@ -16,6 +16,10 @@ class ApiController extends Controller{
             $arrData["flg"] = "1";
             $arrData["msg"] = "입력하신 ID가 사용중입니다.";
         }
+        else if(preg_match("/[^a-z0-9]/i", $arrGet["id"])){
+            $arrData["flg"] = "2";
+            $arrData["msg"] = "사용불가능한 아이디입니다.";
+        }
 
         // 배열을 JSON으로 변경
         $json = json_encode($arrData);

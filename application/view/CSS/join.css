@@ -1,12 +1,13 @@
 h1{
+    padding: 20px;
     text-align: center;
 }
 h1 > a{
     text-decoration: none;
-    color: #308752;
+    color: #333333;
 }
 h1 > a:hover{
-    color: #308752;
+    color: #333333;
 }
 ul,li{
     list-style: none;
@@ -15,7 +16,6 @@ ul,li{
 /* login form */
 form{
     width: 450px;
-    height: 650px;
     margin: 0 auto;
     padding-top: 30px;
     border: 1px solid #ccc;
@@ -31,23 +31,31 @@ label{
     font-size: 15px;
     color: #333333;
     font-weight: 600;
-    vertical-align: top;
+    vertical-align: middle;
     text-align: center;
-    margin-top: 1px;
+}
+input{
+    width: 200px;
+    height: 30px;
+    font-size: 12px !important;
+    margin-top: 20px;
 }
 input:focus{
     outline: 1px solid #308752;
 }
 
-div#idPop{
-    width: 450px;
-    height: 100px;
+div#idPop, div#pwPop, div#namePop{
+    width: 400px;
     text-align: center;
-    font-size: 18px;
-    line-height: 100px;
-    background-color: #ccc;
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%,-20%);
+    color: red;
+}
+
+div#pwChkErr{
+    color: red;
+    text-align: center;
+}
+div.btnBox{
+    width: 300px;
+    margin: 25px 45px;
+    text-align: center;
 }
