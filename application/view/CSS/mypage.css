@@ -1,13 +1,8 @@
-/* login form */
+/* form */
 form{
     width: 450px;
-    margin: 0 auto;
-    padding-top: 30px;
-    border: 1px solid #ccc;
+    margin: 40px auto;
     border-radius: 20px;
-}
-li{
-    margin-top: 10px;
 }
 label{
     width: 100px;
@@ -23,12 +18,11 @@ input{
     width: 200px;
     height: 30px;
     font-size: 12px !important;
-    margin-top: 20px;
+    margin-top: 20px !important;
 }
 input:focus{
     outline: 1px solid #308752;
 }
-
 div#idPop, div#pwPop, div#namePop{
     width: 400px;
     text-align: center;
@@ -39,8 +33,28 @@ div#pwChkErr{
     color: red;
     text-align: center;
 }
-div.btnBox{
-    width: 300px;
-    margin: 25px 45px;
+li.uId{
+    font-size: 24px;
     text-align: center;
+    font-weight: 700;
+}
+
+/* 팝업 */
+div#outPop{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 200px;
+    background-color: #ffffff;
+}
+
+/* button */
+div#btnBox{
+    margin: 40px auto 0px;
+    width: 377px;
+}
+
+div#btnBox > button > a{
+    color: #ffffff;
 }

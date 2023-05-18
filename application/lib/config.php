@@ -24,6 +24,9 @@ define("_BASE_FILENAME_MODEL","Model");
 
 define("_BASE_REDIRECT", "Location: ");
 
+define("_FILE_NAME_HEADER", "header");
+define("_FILE_NAME_SIDE", "side");
+
 define("_STR_LOGIN_ID", "u_id");
 
 ?>

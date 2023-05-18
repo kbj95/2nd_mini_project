@@ -1,16 +1,3 @@
-h1{
-    text-align: center;
-    margin: 0px auto;
-    padding: 20px;
-}
-h1 > a{
-    color: #333333;
-    text-decoration: none;
-}
-h1 > a:hover{
-    color: #333333;
-}
-
 /* login form */
 form{
     width: 450px;

@@ -10,14 +10,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/application/view/CSS/main.css">
+    <link rel="stylesheet" href="/application/view/CSS/common.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <title>SHOPPING MALL</title>
 </head>
 <body>
     <!-- navBar -->
-    <nav class="navbar bg-light navbar-expand-sm sticky-top d-sm-none">
+    <!-- <nav class="navbar bg-light navbar-expand-sm sticky-top d-sm-none">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Navbar</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,16 +47,15 @@
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-success" type="submit">Search</button>
                         </form>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
-                    </li> -->
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav> -->
+    <?php require_once(_PATH_VIEW._FILE_NAME_HEADER._EXTENSTION_PHP); ?>
     <div id="wrap" class="d-flex">
         <!-- sideBar -->
-        <aside class="sticky-top">
+        <?php require_once(_PATH_VIEW._FILE_NAME_SIDE._EXTENSTION_PHP); ?>
+        <!-- <aside class="sticky-top">
             <div class="flex-shrink-0 p-3 bg-white d-none d-sm-block" style="width: 280px;">
                 <a href="/shop/main" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bag-heart-fill" viewBox="0 0 16 16" style="color:#308752;">
@@ -125,7 +124,7 @@
                     </li>
                 </ul>
             </div>
-        </aside>
+        </aside> -->
         <!-- main -->
         <main>
             <!-- <div id="top" class="d-none d-sm-block">

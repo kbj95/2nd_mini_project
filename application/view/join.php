@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/application/view/CSS/common.css">
     <link rel="stylesheet" href="/application/view/CSS/join.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>회원가입</title>
@@ -51,6 +52,10 @@
             <li>
                 <label for="phoneNum">phone</label>
                 <input type="tel" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="phoneNum" id="phoneNum" required placeholder="-를 제외하고 적어주세요" maxlength="11" value="<?php if(isset($this->arrInput["phoneInput"])){echo $this->arrInput["phoneInput"];} ?>">
+                <div id="phonePop">
+                    <?php if(isset($this->arrError["phone"])){ echo $this->arrError["phone"]; }
+                    ?>
+                </div>
             </li>
             <li>
                 <div class="btnBox">

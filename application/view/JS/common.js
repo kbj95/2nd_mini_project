@@ -51,3 +51,14 @@ function pwReChk(){
     }
 
 }
+
+// function outPop(){
+//     const outPop = document.getElementById("outPop");
+
+//     if(outPop.className === "d-none"){
+//         outPop.classList.remove("d-none");
+//     }
+//     else{
+//         outPop.className = "d-none";
+//     }
+// }

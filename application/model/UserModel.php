@@ -85,5 +85,60 @@ class UserModel extends Model{
         }
     }
 
+    // 회원정보 수정
+    public function updateUser($arrUserInfo){
+        $sql = 
+            " UPDATE "
+            ." user_info "
+            ." SET "
+            ." u_pw = :u_pw "
+            ." ,u_name = :u_name "
+            ." ,u_phone_num = :u_phone_num "
+            ." WHERE "
+            ." u_no = :u_no "
+            ;
+        $prepare = [
+            ":u_no" => $arrUserInfo["no"]
+            ,":u_pw" => $arrUserInfo["pw"]
+            ,":u_name" => $arrUserInfo["name"]
+            ,":u_phone_num" => $arrUserInfo["phoneNum"]
+        ];
+        try
+        {
+            $stmt = $this->conn->prepare($sql);
+            $result = $stmt->execute($prepare);
+            return $result; // true 또는 false로 반환
+        }
+        catch( Exception $e )
+        {
+            return false;
+        }
+    }
+
+    // 회원탈퇴(=플래그수정)
+    public function deleteUser($arrUserInfo){
+        $sql = 
+            " UPDATE "
+            ." user_info "
+            ." SET "
+            ." u_del_flg = 1 "
+            ." WHERE "
+            ." u_no = :u_no "
+            ;
+        $prepare = [
+            ":u_no" => $arrUserInfo["no"]
+        ];
+        try
+        {
+            $stmt = $this->conn->prepare($sql);
+            $result = $stmt->execute($prepare);
+            return $result; // true 또는 false로 반환
+        }
+        catch( Exception $e )
+        {
+            return false;
+        }
+    }
+
 }
 ?>

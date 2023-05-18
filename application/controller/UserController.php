@@ -24,7 +24,9 @@ class UserController extends Controller{
         $_SESSION["u_name"] = $result[0]["u_name"];
 
         // 메인 페이지 리턴
-        return _BASE_REDIRECT."/Shop/main";
+        // return _BASE_REDIRECT."/Shop/main";
+        
+        return "main.php";
     }
 
     // 로그아웃 메소드
@@ -101,12 +103,14 @@ class UserController extends Controller{
         }
 
         // 전화번호 유효성 검사
-        if(preg_match("/^\d{3}-\d{3,4}-\d{4}$/", $arrPost["phoneNum"])){
-            $arrChkErr["name"] = "전화번호를 다시 입력해주세요.";
+        if(!preg_match("/01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/", $arrPost["phoneNum"])){
+            $arrChkErr["phoneNum"] = "전화번호를 다시 입력해주세요.";
         }
         else{
             $arrInput["phoneInput"] = $arrPost["phoneNum"];
         }
+
+        // 아이디 중복검사를 위해 (데이터베이스에 있는거랑 비교)
         $result = $this->model->getUser($arrPost, false);
         
         // 중복확인 체크 + 아이디 유효성검사까지 되도록 
@@ -141,8 +145,12 @@ class UserController extends Controller{
         // 정상처리시 커밋
         $this->model->commit();
 
-        // 로그인 페이지로 이동
-        return _BASE_REDIRECT."/User/login";
+        session_start();
+        $_SESSION[_STR_LOGIN_ID] = $arrPost["id"];
+        $_SESSION[_STR_LOGIN_NAME] = $arrPost["name"];
+
+        // 메인 페이지로 이동
+        return _BASE_REDIRECT."/shop/main";
     }
 
     // ----------------------내가 만든 회원가입 ------------------
@@ -167,6 +175,109 @@ class UserController extends Controller{
         $arrMyinfo = $this->model->getUser($arrUserInfo, false);
         $this->model->close();
         return $arrMyinfo[0];
+    }
+    public function mypagePost(){
+        $arrPost = $_POST;
+        $arrChkErr = [];
+        $arrInput = [];
+
+        // 유효성체크
+        // PW 글자수 체크
+        if(mb_strlen($arrPost["pw"]) < 8 || mb_strlen($arrPost["pw"]) > 20){
+            $arrChkErr["pw"] = "PW는 8~20글자로 입력해 주세요.";
+        }
+        // PW 영문숫자특수문자 체크
+        if(preg_match("/\s/u", $arrPost["pw"]) == true){
+            $arrChkErr["pw"] = "비밀번호는 공백없이 입력해주세요.";
+        }
+        if((preg_match("/[0-9]/u", $arrPost["pw"]) === 0 ) || (preg_match("/[^a-z]/u", $arrPost["pw"]) === 0 ) || (preg_match("/[\!\@\*]/u", $arrPost["pw"]) === 0 )){
+            $arrChkErr["pw"] = "특수문자(!/*/@) 영문, 숫자를 혼합하여 입력해주세요.";
+        }
+
+        // 비밀번호와 비밀번호체크 확인
+        if($arrPost["pw"] !== $arrPost["pwChk"]){
+            $arrChkErr["pwChk"] = "비밀번호와 비밀번호확인이 일치하지 않습니다.";
+        }
+
+        // NAME 글자수 체크
+        if(mb_strlen($arrPost["name"]) === 0 || mb_strlen($arrPost["name"]) > 30 ){
+            $arrChkErr["name"] = "이름을 1~30글자로 입력해주세요.";
+        }
+        // 유효성검사를 통과하면 값 출력 유지
+        else{
+            $arrInput["nameInput"] = $arrPost["name"];
+        }
+        if(preg_match("/[^a-z가-힣ㄱ-ㅎㅏ-ㅣ]/u", $arrPost["name"])){
+            $arrChkErr["name"] = "이름을 다시 입력해주세요.";
+        }
+        else{
+            $arrInput["nameInput"] = $arrPost["name"];
+        }
+
+        // 전화번호 유효성 검사
+        if(!preg_match("/01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/", $arrPost["phoneNum"])){
+            $arrChkErr["phoneNum"] = "전화번호를 다시 입력해주세요.";
+        }
+        else{
+            $arrInput["phoneInput"] = $arrPost["phoneNum"];
+        }
+        
+        // Transaction start
+        $this->model->beginTransaction();
+
+        // 유효성체크 에러일 경우
+        if(!empty($arrChkErr)){      
+            // 에러메세지 셋팅
+            $this->addDynamicProperty("arrError",$arrChkErr);
+            $this->addDynamicProperty("arrInput",$arrInput);
+            return "mypage"._EXTENSTION_PHP;
+        }
+
+        // 회원 수정
+        if(!$this->model->updateUser($arrPost)){
+            // 예외처리 롤백
+            $this->model->rollBack();
+            echo "User Regist ERROR";
+            exit();
+        }
+        // 정상처리시 커밋
+        $this->model->commit();
+
+        session_unset();
+        session_destroy();
+
+        session_start();
+        $_SESSION[_STR_LOGIN_ID] = $arrPost["id"];
+        $_SESSION[_STR_LOGIN_NAME] = $arrPost["name"];
+
+        // 메인 페이지로 이동
+        return "main"._EXTENSTION_PHP;
+
+    }
+
+    // 회원탈퇴
+    public function outGet(){
+        $arrGet = $_GET;
+        // Transaction start
+        $this->model->beginTransaction();
+
+
+        // 회원 수정
+        if(!$this->model->deleteUser($arrGet)){
+            // 예외처리 롤백
+            $this->model->rollBack();
+            echo "User Regist ERROR";
+            exit();
+        }
+        // 정상처리시 커밋
+        $this->model->commit();
+
+        session_unset();
+        session_destroy();
+
+        // 메인 페이지로 이동
+        return "main"._EXTENSTION_PHP;
+
     }
 }
 ?>
