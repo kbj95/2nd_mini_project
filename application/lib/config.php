@@ -28,5 +28,5 @@ define("_FILE_NAME_HEADER", "header");
 define("_FILE_NAME_SIDE", "side");
 
 define("_STR_LOGIN_ID", "u_id");
-
+define("_STR_LOGIN_NAME", "u_name")
 ?>

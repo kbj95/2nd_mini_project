@@ -61,7 +61,6 @@
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded my-1">Cart</a></li>
                         <li><a href="/user/mypage" class="link-dark d-inline-flex text-decoration-none rounded my-1">My page</a></li>
-                        <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded my-1">Setting</a></li>
                         <li><a href="/user/<?php echo $flg_login ?>" class="link-dark d-inline-flex text-decoration-none rounded my-1"><?php echo $flg_login ?></a></li>
                     </ul>
                 </div>

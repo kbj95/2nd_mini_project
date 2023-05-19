@@ -1,9 +1,13 @@
 <?php
+// 유효성 검사하는 페이지 : https://regexr.com/
 namespace application\controller;
 
 class UserController extends Controller{
     // GET 방식으로 로그인 페이지를 요청할 때 실행되는 메소드
     public function loginGet(){
+        if($_SESSION){
+            return _BASE_REDIRECT."/shop/main";
+        }
         return "login"._EXTENSTION_PHP;
     }
 
@@ -26,7 +30,7 @@ class UserController extends Controller{
         // 메인 페이지 리턴
         // return _BASE_REDIRECT."/Shop/main";
         
-        return "main.php";
+        return "main"._EXTENSTION_PHP;
     }
 
     // 로그아웃 메소드
@@ -39,6 +43,9 @@ class UserController extends Controller{
 
     // 회원가입
     public function joinGet(){
+        if($_SESSION){
+            return _BASE_REDIRECT."/shop/main";
+        }
         return "join"._EXTENSTION_PHP;
     }
 
@@ -78,7 +85,7 @@ class UserController extends Controller{
         if(preg_match("/\s/u", $arrPost["pw"]) == true){
             $arrChkErr["pw"] = "비밀번호는 공백없이 입력해주세요.";
         }
-        if((preg_match("/[0-9]/u", $arrPost["pw"]) === 0 ) || (preg_match("/[^a-z]/u", $arrPost["pw"]) === 0 ) || (preg_match("/[\!\@\*]/u", $arrPost["pw"]) === 0 )){
+        if((preg_match("/[0-9]/u", $arrPost["pw"]) === 0 ) || (preg_match("/[a-z]/u", $arrPost["pw"]) === 0 ) || (preg_match("/[\!\@\*]/u", $arrPost["pw"]) === 0 )){
             $arrChkErr["pw"] = "특수문자(!/*/@) 영문, 숫자를 혼합하여 입력해주세요.";
         }
 
@@ -95,7 +102,7 @@ class UserController extends Controller{
         else{
             $arrInput["nameInput"] = $arrPost["name"];
         }
-        if(preg_match("/[^a-z가-힣ㄱ-ㅎㅏ-ㅣ]/u", $arrPost["name"])){
+        if(preg_match("/[^가-힣a-zA-Z]/u", $arrPost["name"]) !== 0){
             $arrChkErr["name"] = "이름을 다시 입력해주세요.";
         }
         else{
@@ -145,6 +152,9 @@ class UserController extends Controller{
         // 정상처리시 커밋
         $this->model->commit();
 
+        session_unset();
+        session_destroy();
+
         session_start();
         $_SESSION[_STR_LOGIN_ID] = $arrPost["id"];
         $_SESSION[_STR_LOGIN_NAME] = $arrPost["name"];
@@ -190,7 +200,7 @@ class UserController extends Controller{
         if(preg_match("/\s/u", $arrPost["pw"]) == true){
             $arrChkErr["pw"] = "비밀번호는 공백없이 입력해주세요.";
         }
-        if((preg_match("/[0-9]/u", $arrPost["pw"]) === 0 ) || (preg_match("/[^a-z]/u", $arrPost["pw"]) === 0 ) || (preg_match("/[\!\@\*]/u", $arrPost["pw"]) === 0 )){
+        if((preg_match("/[0-9]/u", $arrPost["pw"]) === 0 ) || (preg_match("/[a-z]/u", $arrPost["pw"]) === 0 ) || (preg_match("/[\!\@\*]/u", $arrPost["pw"]) === 0 )){
             $arrChkErr["pw"] = "특수문자(!/*/@) 영문, 숫자를 혼합하여 입력해주세요.";
         }
 
@@ -207,7 +217,7 @@ class UserController extends Controller{
         else{
             $arrInput["nameInput"] = $arrPost["name"];
         }
-        if(preg_match("/[^a-z가-힣ㄱ-ㅎㅏ-ㅣ]/u", $arrPost["name"])){
+        if(preg_match("/[^가-힣a-zA-Z]/u", $arrPost["name"]) !== 0){
             $arrChkErr["name"] = "이름을 다시 입력해주세요.";
         }
         else{

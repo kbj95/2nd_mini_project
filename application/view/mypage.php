@@ -26,6 +26,7 @@
         <form action="/user/mypage" method="POST">
             <ul>
                 <li>
+                    <input type="hidden" name="id" value="<?php echo $myInfo["u_id"] ?>">
                     <input type="hidden" name="no" value="<?php echo $myInfo["u_no"] ?>">
                 </li>
                 <li class="uId">                    
